@@ -1,9 +1,42 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-const config = require('config');
+const config = require("config");
 
 module.exports = {
+
+  loginUser: async function({credintialInput}, req) {
+
+    const existingUser = await User.findOne({email: credintialInput.email});
+
+    if(!existingUser) {
+      throw new Error('Invalid Credentials')
+    }
+
+    const isMatch = await bcrypt.compare(credintialInput.password, existingUser.password);
+
+    if(!isMatch) {
+      throw new Error('Invalid Credentials')
+    }
+
+    let authToken;
+
+    await Token(existingUser.id)
+      .then((token) => {
+        authToken = token;
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+
+      return {
+        ...existingUser._doc,
+        token: authToken,
+        id: existingUser._id.toString(),
+      };
+  },
+
+
   createUser: async function ({ userInput }, req) {
     const existingUser = await User.findOne({ email: userInput.email });
     if (existingUser) {
@@ -19,25 +52,43 @@ module.exports = {
     });
     const createdUser = await user.save();
 
-    const payload = {
-        user: {
-            id: user.id
-        }
-    }
-    
-    await jwt.sign(payload, config.get('jwtFrutSecret'), { expiresIn: 360000}, (err, token) => {
+    let authToken;
 
-        if(err) {
-            throw err;
-        }
-        userInput.token = token;
-        console.log(userInput.token)
-    });
+    await Token(user.id)
+      .then((token) => {
+        authToken = token;
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
 
-    console.log('token here')
-    console.log(userInput.token)
-
-    return { ...createdUser._doc, token: userInput.token, id: createdUser._id.toString() };
-
+    return {
+      ...createdUser._doc,
+      token: authToken,
+      id: createdUser._id.toString(),
+    };
   },
 };
+
+function Token(id) {
+  const payload = {
+    user: {
+      id: id,
+    },
+  };
+
+  return new Promise((resolve, reject) => {
+    jwt.sign(
+      payload,
+      config.get("jwtFrutSecret"),
+      { expiresIn: "5y" },
+      (err, token) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(token);
+        }
+      }
+    );
+  });
+}
