@@ -18,6 +18,9 @@ app.use((req, res, next) => {
       "OPTIONS, GET, POST, PUT, PATCH, DELETE"
     );
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(200);
+    }
     next();
   });
 
@@ -27,6 +30,15 @@ app.use((req, res, next) => {
       graphiql: true,
       schema: graphqlSchema,
       rootValue: graphqlResolver,
+      formatError(error) {
+        if (!error.originalError) {
+          return error
+        }
+        const message = error.message || "An Error Occured";
+        const data = error.originalError.data;
+        const code = error.originalError.code || 500;
+        return { message: message, status: code , data: data}
+      }
     })
   );
 

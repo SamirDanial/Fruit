@@ -2,21 +2,29 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const validator = require("validator");
 
 module.exports = {
+  loginUser: async function ({ credintialInput }, req) {
+    const existingUser = await User.findOne({ email: credintialInput.email });
 
-  loginUser: async function({credintialInput}, req) {
-
-    const existingUser = await User.findOne({email: credintialInput.email});
-
-    if(!existingUser) {
-      throw new Error('Invalid Credentials')
+    if (!existingUser) {
+      const error = new Error('User not found');
+      error.data = 'Please provide a currect Email';
+      error.code = 401;
+      throw error;
     }
 
-    const isMatch = await bcrypt.compare(credintialInput.password, existingUser.password);
+    const isMatch = await bcrypt.compare(
+      credintialInput.password,
+      existingUser.password
+    );
 
-    if(!isMatch) {
-      throw new Error('Invalid Credentials')
+    if (!isMatch) {
+      const error = new Error('Password is not correct');
+      error.data = 'Please provide a currect Password';
+      error.code = 401;
+      throw error;
     }
 
     let authToken;
@@ -29,18 +37,38 @@ module.exports = {
         console.log(err.message);
       });
 
-      return {
-        ...existingUser._doc,
-        token: authToken,
-        id: existingUser._id.toString(),
-      };
+    return {
+      ...existingUser._doc,
+      token: authToken,
+      id: existingUser._id.toString(),
+    };
   },
 
-
   createUser: async function ({ userInput }, req) {
+    const errors = [];
+    if (!validator.isEmail(userInput.email)) {
+      errors.push({ message: "Email is invalid." });
+    }
+
+    if (
+      validator.isEmpty(userInput.password) ||
+      !validator.isLength(userInput.password, { min: 5 })
+    ) {
+      errors.push({ message: "Password is too short" });
+    }
+
+    if (errors.length > 0) {
+      const error = new Error('Invalid Input')
+      error.data = errors;
+      error.code = 402;
+      throw error
+    }
+
     const existingUser = await User.findOne({ email: userInput.email });
     if (existingUser) {
       const error = new Error("User exists already!");
+      error.data = errors;
+      error.code = 402;
       throw error;
     }
     const salt = await bcrypt.genSalt(10);
