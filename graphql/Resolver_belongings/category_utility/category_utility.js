@@ -1,17 +1,41 @@
 const Category = require("../../../models/category");
-const checkAdmin = require('../utility/check_admin');
+const checkAdmin = require("../utility/check_admin");
 
 module.exports = {
-  getCategories: async function (args, req) {
-
-    if(req.user) {
-      await checkAdmin(req).then(result => {
+  getCategory: async function ({ ID }, req) {
+    console.log(ID);
+    if (req.user) {
+      await checkAdmin(req).then((result) => {
         if (!result) {
           const error = new Error("Not authorised");
           error.code = 401;
           throw error;
         }
-      })
+      });
+    } else {
+      const error = new Error("Not authorised");
+      error.code = 401;
+      throw error;
+    }
+
+    const category = await Category.findById(ID);
+    console.log(category);
+
+    return {
+      ...category._doc,
+      _id: category._id.toString(),
+    };
+  },
+
+  getCategories: async function (args, req) {
+    if (req.user) {
+      await checkAdmin(req).then((result) => {
+        if (!result) {
+          const error = new Error("Not authorised");
+          error.code = 401;
+          throw error;
+        }
+      });
     } else {
       const error = new Error("Not authorised");
       error.code = 401;
@@ -23,21 +47,20 @@ module.exports = {
       categories: categories.map((category) => {
         return {
           ...category._doc,
-          _id: category._id.toString() ,
+          _id: category._id.toString(),
         };
       }),
     };
   },
   createCategory: async function ({ categoryInput }, req) {
-    
-    if(req.user) {
-      await checkAdmin(req).then(result => {
+    if (req.user) {
+      await checkAdmin(req).then((result) => {
         if (!result) {
           const error = new Error("Not authorised");
           error.code = 401;
           throw error;
         }
-      })
+      });
     } else {
       const error = new Error("Not authorised");
       error.code = 401;
@@ -54,6 +77,32 @@ module.exports = {
     return {
       ...savedCategory._doc,
       _id: savedCategory._id.toString(),
+    };
+  },
+  editCategory: async function ({ categoryInput }, req) {
+    if (req.user) {
+      await checkAdmin(req).then((result) => {
+        if (!result) {
+          const error = new Error("Not authorised");
+          error.code = 401;
+          throw error;
+        }
+      });
+    } else {
+      const error = new Error("Not authorised");
+      error.code = 401;
+      throw error;
+    }
+
+    const category = await Category.findOneAndUpdate(
+      { _id: categoryInput.ID },
+      { name: categoryInput.name, description: categoryInput.description },
+      { new: true }
+    );
+
+    return {
+      ...category._doc,
+      _id: category._id.toString(),
     };
   },
 };
