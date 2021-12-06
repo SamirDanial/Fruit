@@ -1,5 +1,5 @@
 const { loginUser, createUser } = require('./Resolver_belongings/user_utility/user_utility');
-const { createCategory, editCategory, getCategory, getCategories } = require('./Resolver_belongings/category_utility/category_utility')
+const { createCategory, editCategory, getCategory, getCategories, deleteCategory } = require('./Resolver_belongings/category_utility/category_utility')
 
 module.exports = {
 
@@ -13,6 +13,7 @@ module.exports = {
   getCategory: (props, req) => getCategory(props, req),
   getCategories: (props, req) => getCategories(props, req),
   editCategory: (props, req) => editCategory(props, req),
+  deleteCategory: (props, req) => deleteCategory(props, req),
 };
 
 

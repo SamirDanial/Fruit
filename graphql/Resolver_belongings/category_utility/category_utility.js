@@ -105,4 +105,24 @@ module.exports = {
       _id: category._id.toString(),
     };
   },
+
+  deleteCategory: async function({ID}, req) {
+    if (req.user) {
+      await checkAdmin(req).then((result) => {
+        if (!result) {
+          const error = new Error("Not authorised");
+          error.code = 401;
+          throw error;
+        }
+      });
+    } else {
+      const error = new Error("Not authorised");
+      error.code = 401;
+      throw error;
+    }
+
+    await Category.deleteOne({_id: ID});
+
+    return "deleted successfully";
+  }
 };
