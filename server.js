@@ -5,31 +5,72 @@ const graphqlSchema = require("./graphql/schema");
 const graphqlResolver = require("./graphql/resolvers");
 const auth = require("./middleware/auth");
 const UserRole = require("./models/userRole");
+const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
+
 
 const app = express();
 
 connectDB();
 
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'images');
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().toISOString() + '-' + file.originalname);
+  }
+})
+
+const fileFilter = (req, file, cb) => {
+  if(
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg'
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+}
 
 
 
-
-app.use(express.json({ extended: false }));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Methods",
     "OPTIONS, GET, POST, PUT, PATCH, DELETE"
-  );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
-  next();
-});
-
+    );
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    if (req.method === "OPTIONS") {
+      return res.sendStatus(200);
+    }
+    next();
+  });
+  
+app.use(express.json({ extended: false }));
 app.use(auth);
+
+app.use(
+  multer({ storage: fileStorage, fileFilter: fileFilter}).single('image')
+);
+
+app.put('/fruit-images', (req, res, next) => {
+  // if (!req.isAuth) {
+  //   throw new Error('Not authenticated');
+  // }
+  console.log('image fruit is run');
+  if(!req.file) {
+    return res.status(200).json({message: 'No file provided'});
+  }
+  if(req.body.oldPath) {
+    clearImage(req.body.oldPath);
+  }
+  return res.status(201).json({message: 'File stored', filePath: req.file.path})
+})
 
 RoleExist('Admin');
 RoleExist('Vendor')
@@ -71,3 +112,9 @@ async function RoleExist(roleName) {
     await newRole.save();
   }
 }
+
+const clearImage = filePath => {
+  filePath = path.join(__dirname, '..', filePath);
+  fs.unlink(filePath, err => console.log(err));
+}
+

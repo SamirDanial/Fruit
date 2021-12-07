@@ -19,7 +19,7 @@ const ProductSchema = new mongoose.Schema({
   },
   photos: [
     {
-      photo: {
+      photoUrl: {
         type: String
       }
     }
