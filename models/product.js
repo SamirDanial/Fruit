@@ -17,11 +17,14 @@ const ProductSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  visible: {
+    type: Boolean,
+    required: true
+  },
   photos: [
     {
-      photoUrl: {
-        type: String
-      }
+      photoUrl: String,
+      featured: Boolean,
     }
   ]
 });

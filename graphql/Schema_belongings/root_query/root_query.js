@@ -3,5 +3,10 @@ type RootQuery {
     loginUser(credintialInput: Credintial): User!
     getCategories: Categories!
     getCategory(ID: String!): Category!
+    getProducts( PageSize: Int, PageNumber: Int): Products!
+    getProduct(ID: String!): Product!
+    autoFillNameProduct(Name: String!): [String!]!
+    filterByNameProduct(Name: String!): Products!
 }
-`;
+`
+;

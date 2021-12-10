@@ -19,7 +19,8 @@ const fileStorage = multer.diskStorage({
     cb(null, 'images');
   },
   filename: (req, file, cb) => {
-    cb(null, new Date().toISOString() + '-' + file.originalname);
+    let now = new Date().toISOString().replaceAll(':', '-');
+    cb(null, now + '-' + file.originalname);
   }
 })
 
@@ -59,17 +60,21 @@ app.use(
 );
 
 app.put('/fruit-images', (req, res, next) => {
-  // if (!req.isAuth) {
-  //   throw new Error('Not authenticated');
-  // }
-  console.log('image fruit is run');
-  if(!req.file) {
-    return res.status(200).json({message: 'No file provided'});
+  try{
+    if (!req.isAuth) {
+      throw new Error('Not authenticated');
+    }
+    if(!req.file) {
+      return res.status(200).json({message: 'No file provided'});
+    }
+    if(req.body.oldPath) {
+      clearImage(req.body.oldPath);
+    }
+    return res.status(201).json({message: 'File stored', filePath: req.file.path})
+
+  }catch(error) {
+    return res.json({message: "Not authorized"});
   }
-  if(req.body.oldPath) {
-    clearImage(req.body.oldPath);
-  }
-  return res.status(201).json({message: 'File stored', filePath: req.file.path})
 })
 
 RoleExist('Admin');
