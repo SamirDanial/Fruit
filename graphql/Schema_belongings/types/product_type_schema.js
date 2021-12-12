@@ -5,6 +5,7 @@ module.exports = `
         description: String!
         price: Float!
         visible: Boolean!
+        categories: [Category]
         photos: [Photo!]!
     }
 `

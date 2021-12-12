@@ -7,6 +7,8 @@ type RootQuery {
     getProduct(ID: String!): Product!
     autoFillNameProduct(Name: String!): [String!]!
     filterByNameProduct(Name: String!): Products!
+    getStocks(PageSize: Int, PageNumber: Int): Stocks!
+    getStock(ID: String!, ItemsPerPageSize: Int, ItemsPageNumber: Int): Stock!
 }
 `
 ;

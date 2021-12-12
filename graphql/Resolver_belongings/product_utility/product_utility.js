@@ -1,4 +1,5 @@
 const Product = require("../../../models/product");
+const Category = require('../../../models/category');
 const checkAdmin = require("../utility/check_admin");
 
 module.exports = {
@@ -45,7 +46,7 @@ module.exports = {
   },
 
   getProduct: async function ({ ID }, req) {
-    const product = await Product.findById(ID);
+    const product = await Product.findById(ID).populate('categories');
 
     return {
       ...product._doc,
@@ -57,7 +58,7 @@ module.exports = {
     const products = await Product.find()
       .skip((PageNumber - 1) * PageSize)
       .limit(PageSize)
-      .sort({ name: 1 });
+      .sort({ name: 1 }).populate('categories');
     const customisedProducts = [];
 
     products.forEach((product) => {
@@ -67,8 +68,8 @@ module.exports = {
       p.description = product.description;
       p.price = product.price;
       p.visible = product.visible;
+      p.categories = product.categories;
       p.photos = product.photos.filter((x) => x.featured == true);
-      console.log(p);
       customisedProducts.push(p);
     });
 
@@ -101,6 +102,7 @@ module.exports = {
       description: productInput.description,
       price: productInput.price,
       visible: productInput.visible,
+      categories: productInput.categoriesID,
       photos: [
         {
           photoUrl: productInput.photo.photoUrl,
@@ -110,10 +112,11 @@ module.exports = {
     });
 
     const savedProduct = await product.save();
+    const returnedProduct = await Product.findById(savedProduct._id.toString()).populate('categories');
 
     return {
-      ...savedProduct._doc,
-      _id: savedProduct._id.toString(),
+      ...returnedProduct._doc,
+      _id: returnedProduct._id.toString(),
     };
   },
 
@@ -139,13 +142,16 @@ module.exports = {
         description: productInput.description,
         price: productInput.price,
         visible: productInput.visible,
+        categories: productInput.categoriesID,
       },
       { new: true }
     );
 
+    const returnedProduct = await Product.findById(product._id.toString()).populate('categories');
+
     return {
-      ...product._doc,
-      _id: product._id.toString(),
+      ...returnedProduct._doc,
+      _id: returnedProduct._id.toString(),
     };
   },
 
@@ -173,8 +179,8 @@ module.exports = {
     await product.save();
 
     return {
-      ...product._doc,
-      _id: product._id.toString(),
+      photoUrl: photoInput.photoUrl,
+      featured: photoInput.featured,
     };
   },
 

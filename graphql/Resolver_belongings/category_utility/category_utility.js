@@ -3,7 +3,6 @@ const checkAdmin = require("../utility/check_admin");
 
 module.exports = {
   getCategory: async function ({ ID }, req) {
-    console.log(ID);
     if (req.user) {
       await checkAdmin(req).then((result) => {
         if (!result) {

@@ -1,6 +1,6 @@
 module.exports = `
     type Photo {
-        _id: ID!
+        _id: ID
         photoUrl: String!
         featured: Boolean!
     }

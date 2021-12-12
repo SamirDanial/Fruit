@@ -16,7 +16,7 @@ const StockSchema = new mongoose.Schema({
         ref: "product",
       },
       availableNumber: {
-        type: Int,
+        type: Number,
       },
     },
   ],
