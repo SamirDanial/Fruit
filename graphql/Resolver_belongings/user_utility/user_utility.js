@@ -44,11 +44,8 @@ module.exports = {
         };
     },
     createUser: async function ({ userInput }, req) {
+      console.log(userInput);
       const errors = [];
-      if (!validator.isEmail(userInput.email)) {
-        errors.push({ message: "Email is invalid." });
-      }
-  
       if (
         validator.isEmpty(userInput.password) ||
         !validator.isLength(userInput.password, { min: 5 })
@@ -63,7 +60,7 @@ module.exports = {
         throw error
       }
   
-      const existingUser = await User.findOne({ email: userInput.email });
+      const existingUser = await User.findOne({ username: userInput.username });
       if (existingUser) {
         const error = new Error("User exists already!");
         error.data = errors;
@@ -75,8 +72,7 @@ module.exports = {
       const rolename = userInput.userRole;
       const role = await UserRole.findOne({name: rolename});
       const user = new User({
-        email: userInput.email,
-        name: userInput.name,
+        username: userInput.username,
         password: hashedPw,
         userRole: role
       });

@@ -36,22 +36,22 @@ module.exports = {
       customisedProducts.push(p);
     });
 
-    return {
+    return products != null ? {
       products: customisedProducts.map((product, index) => {
         return {
           ...product,
         };
       }),
-    };
+    }: "Not found any product";
   },
 
   getProduct: async function ({ ID }, req) {
     const product = await Product.findById(ID).populate('categories');
 
-    return {
+    return product != null ? {
       ...product._doc,
       _id: product._id.toString(),
-    };
+    }: "Not found any product";
   },
 
   getProducts: async function ({ PageSize, PageNumber }, req) {
@@ -73,13 +73,13 @@ module.exports = {
       customisedProducts.push(p);
     });
 
-    return {
+    return products != null ? {
       products: customisedProducts.map((product, index) => {
         return {
           ...product,
         };
       }),
-    };
+    }: "Not found andy product";
   },
 
   createProduct: async function ({ productInput }, req) {

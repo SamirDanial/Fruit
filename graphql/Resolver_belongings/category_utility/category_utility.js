@@ -18,12 +18,11 @@ module.exports = {
     }
 
     const category = await Category.findById(ID);
-    console.log(category);
 
-    return {
+    return category != null ? {
       ...category._doc,
       _id: category._id.toString(),
-    };
+    }: "Not found any category";
   },
 
   getCategories: async function (args, req) {
@@ -42,14 +41,14 @@ module.exports = {
     }
 
     const categories = await Category.find().sort({ name: -1 });
-    return {
+    return categories != null ? {
       categories: categories.map((category) => {
         return {
           ...category._doc,
           _id: category._id.toString(),
         };
       }),
-    };
+    }: "Not found any category";
   },
   createCategory: async function ({ categoryInput }, req) {
     if (req.user) {

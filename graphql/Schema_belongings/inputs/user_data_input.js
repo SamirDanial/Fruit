@@ -1,8 +1,7 @@
 module.exports = `
 input UserInputData {
-    name: String!
+    username: String!
     userRole: String!
-    email: String!
     password: String!
 }
 `;

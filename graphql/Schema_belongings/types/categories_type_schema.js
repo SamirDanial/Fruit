@@ -1,5 +1,5 @@
 module.exports = `
     type Categories {
-        categories: [Category!]!
+        categories: [Category]
     }
 `;

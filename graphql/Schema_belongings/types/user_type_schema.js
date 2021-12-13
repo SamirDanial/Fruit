@@ -1,10 +1,9 @@
 module.exports = `
     type User {
-        _id: ID!
-        name: String!
-        email: String!
-        userRole: String!
+        _id: ID
+        username: String
+        userRole: String
         password: String
-        token: String!
+        token: String
     }
 `;

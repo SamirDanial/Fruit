@@ -22,19 +22,19 @@ module.exports = {
       .skip((PageNumber - 1) * PageSize)
       .limit(PageSize)
       .sort({ name: 1 })
-      .select(['_id', 'name', 'description']);
+      .select(["_id", "name", "description"]);
 
-    return {
+    return stocks != null ? {
       stocks: stocks.map((stock) => {
         return {
           ...stock._doc,
           _id: stock._id.toString(),
         };
       }),
-    };
+    }: "Not found any stock";
   },
 
-  getStock: async function({ ID, ItemsPerPageSize, ItemsPageNumber }, req) {
+  getStock: async function ({ ID, ItemsPerPageSize, ItemsPageNumber }, req) {
     if (req.user) {
       await checkAdmin(req).then((result) => {
         if (!result) {
@@ -48,27 +48,34 @@ module.exports = {
       error.code = 401;
       throw error;
     }
-
-    const stock = await Stock.findById(ID).populate('itemInStock.product')
-    const itemsToReturn = stock.itemInStock;
-    const itemsToShow = [];
-    if(ItemsPageNumber == 1) {
-      for (let index = 0; index < ItemsPerPageSize; index++) {
-        itemsToShow.push(itemsToReturn[index]);
+    const stock = await Stock.findById(ID).populate("itemInStock.product");
+    if (stock !== null) {
+      const itemsToReturn = stock.itemInStock;
+      const itemsToShow = [];
+      if (ItemsPageNumber == 1) {
+        for (let index = 0; index < ItemsPerPageSize; index++) {
+          itemsToShow.push(itemsToReturn[index]);
+        }
+      } else {
+        for (
+          let index = ItemsPerPageSize * ItemsPageNumber - ItemsPerPageSize;
+          index < ItemsPerPageSize * ItemsPageNumber;
+          index++
+        ) {
+          itemsToShow.push(itemsToReturn[index]);
+        }
       }
-    } else {
-      for (let index = (ItemsPerPageSize * ItemsPageNumber) - ItemsPerPageSize; index < (ItemsPerPageSize * ItemsPageNumber); index++) {
-        itemsToShow.push(itemsToReturn[index]);
+      if (itemsToShow[0] != undefined) {
+        stock.itemInStock = itemsToShow;
       }
     }
-    if (itemsToShow[0] != undefined) {
-      stock.itemInStock = itemsToShow;
-    }
 
-    return {
-      ...stock._doc,
-      _id: stock._id.toString()
-    }
+    return stock != null
+      ? {
+          ...stock._doc,
+          _id: stock._id.toString(),
+        }
+      : "Not found";
   },
 
   createStock: async function ({ stockInputData }, req) {
@@ -146,7 +153,7 @@ module.exports = {
     return "deleted successfuly";
   },
 
-  addProductToStock: async function({ID, availableNumber, productID}, req) {
+  addProductToStock: async function ({ ID, availableNumber, productID }, req) {
     if (req.user) {
       await checkAdmin(req).then((result) => {
         if (!result) {
@@ -161,34 +168,41 @@ module.exports = {
       throw error;
     }
     let alreadyAvailable = false;
-    const stock = await Stock.findById(ID).populate('itemInStock.product');
+    const stock = await Stock.findById(ID).populate("itemInStock.product");
 
-    stock.itemInStock.forEach(item => {
-      if(item.product._id.toString() == productID) {
+    stock.itemInStock.forEach((item) => {
+      if (item.product._id.toString() == productID) {
         alreadyAvailable = true;
       }
       if (alreadyAvailable) return;
     });
 
-    if(!alreadyAvailable) {
+    if (!alreadyAvailable) {
       stock.itemInStock.push({
         product: productID,
-        availableNumber: availableNumber
-      })
+        availableNumber: availableNumber,
+      });
     } else {
-      const item = await stock.itemInStock.filter(x => x.product._id.toString() == productID)[0];
+      const item = await stock.itemInStock.filter(
+        (x) => x.product._id.toString() == productID
+      )[0];
       item.availableNumber = item.availableNumber + availableNumber;
     }
     await stock.save();
-    const returnedStock = await Stock.findById(ID).populate('itemInStock.product');
+    const returnedStock = await Stock.findById(ID).populate(
+      "itemInStock.product"
+    );
 
     return {
       ...returnedStock._doc,
-      _id: returnedStock._id.toString()
-    }
+      _id: returnedStock._id.toString(),
+    };
   },
 
-  removeProductFromStock: async function({ ID, numberToRemove, productID }, req) {
+  removeProductFromStock: async function (
+    { ID, numberToRemove, productID },
+    req
+  ) {
     if (req.user) {
       await checkAdmin(req).then((result) => {
         if (!result) {
@@ -203,10 +217,12 @@ module.exports = {
       throw error;
     }
 
-    const stock = await Stock.findById(ID).populate('itemInStock.product')
-    const item = await stock.itemInStock.filter(x => x.product._id.toString() == productID)[0];
+    const stock = await Stock.findById(ID).populate("itemInStock.product");
+    const item = await stock.itemInStock.filter(
+      (x) => x.product._id.toString() == productID
+    )[0];
 
-    if(item && item.availableNumber >= numberToRemove) {
+    if (item && item.availableNumber >= numberToRemove) {
       item.availableNumber -= numberToRemove;
     } else {
       const error = new Error("Not enough item");
@@ -216,7 +232,7 @@ module.exports = {
     await stock.save();
     return {
       ...stock._doc,
-      _id: stock._id.toString()
-    }
-  }
+      _id: stock._id.toString(),
+    };
+  },
 };
