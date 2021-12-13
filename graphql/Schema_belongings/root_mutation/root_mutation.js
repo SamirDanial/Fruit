@@ -17,6 +17,6 @@ type RootMutation {
     removeProductFromStock(ID: String!, numberToRemove: Int!, productID: String!): Stock
     createCustomer(customerInputData: CustomerInputData!): Customer
     editCustomer(customerInputData: CustomerInputData!): Customer
-    deleteCustomer(ID: String!): String
+    deleteCustomer(ID: String!, userId: String!): String
 }
 `;

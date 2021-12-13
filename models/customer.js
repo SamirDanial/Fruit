@@ -23,12 +23,10 @@ const CustomerSchema = new mongoose.Schema({
   },
   phoneNumber: {
     type: String,
-    unique: true,
     required: false,
   },
   emailAddress: {
     type: String,
-    unique: true,
     required: false,
   },
   coordinates: {

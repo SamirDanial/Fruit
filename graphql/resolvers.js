@@ -32,7 +32,7 @@ const {
   getStock,
 } = require("./Resolver_belongings/stock_utility/stock_utility");
 
-const { createCustomer, editCustomer } = require('./Resolver_belongings/customer_utility/customer_utility');
+const { createCustomer, editCustomer, deleteCustomer, getCustomers } = require('./Resolver_belongings/customer_utility/customer_utility');
 
 module.exports = {
   // -------------------------- user_utility---------------------------
@@ -70,4 +70,6 @@ module.exports = {
   // ------------------------- Customer_utility -----------------------
   createCustomer: (props, req) => createCustomer(props, req),
   editCustomer: (props, req) => editCustomer(props, req),
+  deleteCustomer: (props, req) => deleteCustomer(props, req),
+  getCustomers: (props, req) => getCustomers(props, req),
 };

@@ -1,5 +1,6 @@
 module.exports = `
     type Customer {
+        _id: ID,
         name: String,
         lastName: String,
         active: Boolean,

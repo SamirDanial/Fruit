@@ -9,7 +9,7 @@ type RootQuery {
     filterByNameProduct(Name: String!): Products
     getStocks(PageSize: Int, PageNumber: Int): Stocks
     getStock(ID: String!, ItemsPerPageSize: Int, ItemsPageNumber: Int): Stock
-    getCustomers: [Customer!]
+    getCustomers(PageNumber: Int!, PageSize: Int!): Customers
     getCustomer(ID: String!): Customer
     searchCustomer(customerInputData: CustomerInputData): [Customer]
 }
