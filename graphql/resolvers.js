@@ -22,7 +22,17 @@ const {
   filterByNameProduct,
 } = require("./Resolver_belongings/product_utility/product_utility");
 
-const { createStock, editStock, deleteStock, getStocks, addProductToStock, removeProductFromStock, getStock } = require('./Resolver_belongings/stock_utility/stock_utility')
+const {
+  createStock,
+  editStock,
+  deleteStock,
+  getStocks,
+  addProductToStock,
+  removeProductFromStock,
+  getStock,
+} = require("./Resolver_belongings/stock_utility/stock_utility");
+
+const { createCustomer, editCustomer } = require('./Resolver_belongings/customer_utility/customer_utility');
 
 module.exports = {
   // -------------------------- user_utility---------------------------
@@ -47,7 +57,7 @@ module.exports = {
   setFeatureProduct: (props, req) => setFeatureProduct(props, req),
   autoFillNameProduct: (props, req) => autoFillNameProduct(props, req),
   filterByNameProduct: (props, req) => filterByNameProduct(props, req),
-  
+
   // ------------------------- Stock_utility --------------------------
   createStock: (props, req) => createStock(props, req),
   editStock: (props, req) => editStock(props, req),
@@ -57,4 +67,7 @@ module.exports = {
   addProductToStock: (props, req) => addProductToStock(props, req),
   removeProductFromStock: (props, req) => removeProductFromStock(props, req),
 
+  // ------------------------- Customer_utility -----------------------
+  createCustomer: (props, req) => createCustomer(props, req),
+  editCustomer: (props, req) => editCustomer(props, req),
 };

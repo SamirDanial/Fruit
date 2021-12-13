@@ -17,7 +17,7 @@ const CustomerSchema = new mongoose.Schema({
   photoUrl: {
     type: String,
   },
-  PhysicalAddress: {
+  physicalAddress: {
     type: String,
     required: true,
   },

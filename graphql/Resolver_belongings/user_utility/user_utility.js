@@ -6,10 +6,10 @@ const Token_generator = require('../utility/token_generator')
 
 module.exports = {
     loginUser: async function({ credintialInput }, req) {
-        const existingUser = await User.findOne({ email: credintialInput.email }).populate('userRole');
+        const existingUser = await User.findOne({ username: credintialInput.username }).populate('userRole');
         if (!existingUser) {
           const error = new Error('User not found');
-          error.data = 'Please provide a currect Email';
+          error.data = 'Please provide a currect Username';
           error.code = 401;
           throw error;
         }
@@ -44,7 +44,6 @@ module.exports = {
         };
     },
     createUser: async function ({ userInput }, req) {
-      console.log(userInput);
       const errors = [];
       if (
         validator.isEmpty(userInput.password) ||

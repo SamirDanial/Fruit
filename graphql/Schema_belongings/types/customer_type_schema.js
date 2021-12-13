@@ -4,12 +4,12 @@ module.exports = `
         lastName: String,
         active: Boolean,
         photoUrl: String,
-        pysicalAddress: String,
+        physicalAddress: String,
         phoneNumber: String,
         emailAddress: String,
         coordinates: String,
         favoriteCategories: [Category],
-        user: User!,
+        userId: User!,
     }
 `
 ;
