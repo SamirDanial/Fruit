@@ -52,9 +52,9 @@ module.exports = {
   createStock: (props, req) => createStock(props, req),
   editStock: (props, req) => editStock(props, req),
   deleteStock: (props, req) => deleteStock(props, req),
+  getStock: (props, req) => getStock(props, req),
   getStocks: (props, req) => getStocks(props, req),
   addProductToStock: (props, req) => addProductToStock(props, req),
   removeProductFromStock: (props, req) => removeProductFromStock(props, req),
-  getStock: (props, req) => getStock(props, req),
 
 };

@@ -50,6 +50,20 @@ module.exports = {
     }
 
     const stock = await Stock.findById(ID).populate('itemInStock.product')
+    const itemsToReturn = stock.itemInStock;
+    const itemsToShow = [];
+    if(ItemsPageNumber == 1) {
+      for (let index = 0; index < ItemsPerPageSize; index++) {
+        itemsToShow.push(itemsToReturn[index]);
+      }
+    } else {
+      for (let index = (ItemsPerPageSize * ItemsPageNumber) - ItemsPerPageSize; index < (ItemsPerPageSize * ItemsPageNumber); index++) {
+        itemsToShow.push(itemsToReturn[index]);
+      }
+    }
+    if (itemsToShow[0] != undefined) {
+      stock.itemInStock = itemsToShow;
+    }
 
     return {
       ...stock._doc,
