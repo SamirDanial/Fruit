@@ -2,6 +2,15 @@ const Customer = require("../../../models/customer");
 const checkAdmin = require("../utility/check_admin");
 
 module.exports = {
+  getCustomer: async ({ ID }, req) => {
+    const customer = await Customer.findById(ID).populate('userId');
+    await customer.populate('userId.userRole');
+
+    return {
+      ...customer._doc,
+      _id: customer._id.toString()
+    }
+  },
   getCustomers: async ({ PageNumber, PageSize }, req) => {
     if (req.user) {
       await checkAdmin(req).then((result) => {
@@ -16,14 +25,15 @@ module.exports = {
       error.code = 401;
       throw error;
     }
-
     const customers = await Customer.find()
       .skip((PageNumber - 1) * PageSize)
       .limit(PageSize)
       .sort({ name: 1 })
-      .populate("userId").populate("userRole");
+      .populate("userId");
 
-    console.log(customers);
+    for (const customer of customers) {
+      await customer.populate("userId.userRole");
+    }
 
     return {
       customers: customers.map((customer, index) => {
@@ -78,11 +88,28 @@ module.exports = {
     }
   },
   deleteCustomer: async ({ ID, userId }, req) => {
-    if (req.user.id == userId) {
-      await Customer.deleteOne({ _id: ID });
-      return "deleted successfuly";
+    if (req.user) {
+      await checkAdmin(req).then((result) => {
+        if (!result) {
+          const error = new Error("Not authorised");
+          error.code = 401;
+          throw error;
+        }
+      });
     } else {
-      return "deletion failed";
+      const error = new Error("Not authorised");
+      error.code = 401;
+      throw error;
     }
+
+    // if (req.user.id == userId) {
+    //   await Customer.deleteOne({ _id: ID });
+    //   return "deleted successfuly";
+    // } else {
+    //   return "deletion failed";
+    // }
+
+    await Customer.deleteOne({ _id: ID });
+    return "deleted successfuly";
   },
 };

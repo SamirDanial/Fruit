@@ -3,6 +3,7 @@ const { buildSchema } = require("graphql");
 
 // --------------------- Types -------------------------------
 const userTypeSchema = require("./Schema_belongings/types/user_type_schema");
+const userRoleTypeSchema = require("./Schema_belongings/types/userRole_type_schema");
 const categoryTypeSchema = require("./Schema_belongings/types/category_type_schema");
 const categoriesTypeSchema = require('./Schema_belongings/types/categories_type_schema');
 const photoTypeSchema = require('./Schema_belongings/types/photo_type_schema');
@@ -43,6 +44,7 @@ const schema = require("./Schema_belongings/schema/schema");
 module.exports = buildSchema(`
 
     ${userTypeSchema}
+    ${userRoleTypeSchema}
     ${categoryTypeSchema}
     ${categoriesTypeSchema}
     ${photoTypeSchema}
