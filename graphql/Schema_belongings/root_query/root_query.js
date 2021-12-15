@@ -12,6 +12,9 @@ type RootQuery {
     getCustomers(PageNumber: Int!, PageSize: Int!): Customers
     getCustomer(ID: String!): Customer
     searchCustomer(customerInputData: CustomerInputData): [Customer]
+    getOrder(ID: String): Order
+    getOrders(PageNumber: Int, PageSize: Int): [Order]
+    searchOrder(orderCode: String, date: String, name: String): [Order]
 }
 `
 ;
