@@ -64,14 +64,14 @@ module.exports = {
     for (let i = 0; i < favoriteProducts.favoriteProducts.length; i++) {
       await favoriteProducts.populate(`favoriteProducts.${i}.product`);
     }
-
-    console.log("%j",favoriteProducts._doc);
-
-    // console.log("%j",favoriteProducts);
-
-
+    
     return favoriteProducts.favoriteProducts[0].product.name && {
       ...favoriteProducts._doc,
+       favoriteProducts: favoriteProducts._doc.favoriteProducts.map((p, index) => {
+        return {
+          ...p.product._doc
+        }
+      }),
       _id: favoriteProducts._id.toString(),
     }
     
