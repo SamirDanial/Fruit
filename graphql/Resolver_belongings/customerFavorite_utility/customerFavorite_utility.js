@@ -65,18 +65,14 @@ module.exports = {
       await favoriteProducts.populate(`favoriteProducts.${i}.product`);
     }
 
-    console.log(favoriteProducts.favoriteProducts[0].product.name);
+    console.log("%j",favoriteProducts._doc);
 
     // console.log("%j",favoriteProducts);
 
 
     return favoriteProducts.favoriteProducts[0].product.name && {
       ...favoriteProducts._doc,
-      // favoriteProducts: favoriteProducts.favoriteProducts.map((favoriteProduct, index) => {
-      //   return {
-      //     ...favoriteProduct
-      //   }
-      // })
+      _id: favoriteProducts._id.toString(),
     }
     
   },
