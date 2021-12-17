@@ -1,10 +1,7 @@
 const mongoose = require('mongoose');
 
 const OrderSchema = new mongoose.Schema({
-    name: String,
-    lastName: String,
     address: String,
-    phoneNumber: String,
     geoLocation: String,
     orderCode: String,
     isCanceled: {
@@ -30,7 +27,7 @@ const OrderSchema = new mongoose.Schema({
     totalPrice: Number,
     orderDate: {
         type: Date,
-        default: Date.now(),
+        default: new Date(),
     }
 });
 

@@ -13,8 +13,13 @@ type RootQuery {
     getCustomer(ID: String!): Customer
     searchCustomer(customerInputData: CustomerInputData): [Customer]
     getOrder(ID: String): Order
-    getOrders(PageNumber: Int, PageSize: Int): [Order]
-    searchOrder(orderCode: String, date: String, name: String): [Order]
+    getOrders(PageNumber: Int, PageSize: Int): Orders
+    searchOrder(orderCode: String, fromDate: String, toDate: String, PageNumber: Int, PageSize: Int): Orders
+    getOrderForCustomer(ID: String, customerID: String): Order
+    getOrdersForCustomer(customerID: String, PageNumber: Int, PageSize: Int): Orders
+    searchOrderForCustomer(customerID: String, orderCode: String, fromDate: String, toDate: String, PageNumber: Int, PageSize: Int): Orders
+    getFavorites(customerId: String): CustomerFavorite
+    getFavorite(customerId: String, productId: String): CustomerFavorite
 }
 `
 ;

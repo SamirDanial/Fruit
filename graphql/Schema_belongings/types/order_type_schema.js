@@ -1,10 +1,7 @@
 module.exports = `
     type Order {
         _id: ID
-        name: String
-        lastName: String
         address: String
-        phoneNumber: String
         geoLocation: String
         orderCode: String
         isCanceled: Boolean
