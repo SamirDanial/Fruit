@@ -18,5 +18,10 @@ type RootMutation {
     createCustomer(customerInputData: CustomerInputData!): Customer
     editCustomer(customerInputData: CustomerInputData!): Customer
     deleteCustomer(ID: String!, userId: String!): String
+    createOrder(orderInputData: OrderInputData): Order
+    editOrder(orderInputData: OrderInputData): Order
+    toggleCancelOrder(ID: String): Order
+    addToFavorites(customerFavoriteInputData: CustomerFavoriteInputData): CustomerFavorite
+    removeFromFavorites(customerFavoriteInputData: CustomerFavoriteInputData): CustomerFavorite
 }
 `;

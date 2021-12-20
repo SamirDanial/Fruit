@@ -3,6 +3,7 @@ const { buildSchema } = require("graphql");
 
 // --------------------- Types -------------------------------
 const userTypeSchema = require("./Schema_belongings/types/user_type_schema");
+const userRoleTypeSchema = require("./Schema_belongings/types/userRole_type_schema");
 const categoryTypeSchema = require("./Schema_belongings/types/category_type_schema");
 const categoriesTypeSchema = require('./Schema_belongings/types/categories_type_schema');
 const photoTypeSchema = require('./Schema_belongings/types/photo_type_schema');
@@ -13,6 +14,11 @@ const stockTypeSchema = require('./Schema_belongings/types/stock_type_schema');
 const stocksTypeSchema = require('./Schema_belongings/types/stocks_type_schema');
 const customerTypeSchema = require('./Schema_belongings/types/customer_type_schema');
 const customersTypeSchema = require('./Schema_belongings/types/customers_type_schema');
+const customerFavoritesTypeSchema = require('./Schema_belongings/types/customerFavorites_type.schema');
+const customerFavoriteTypeSchema = require('./Schema_belongings/types/customerFavorite_type_schema');
+const orderTypeSchema = require('./Schema_belongings/types/order_type_schema');
+const orderProductsTypeSchema = require('./Schema_belongings/types/orderProducts_type_schema');
+const ordersTypeSchema = require('./Schema_belongings/types/orders_type_schema');
 
 
 // --------------------- Inputs ------------------------------
@@ -24,6 +30,9 @@ const productInputData = require('./Schema_belongings/inputs/product_data_input'
 const stockItemInputData = require('./Schema_belongings/inputs/stockItem_data_input');
 const stockInputData = require('./Schema_belongings/inputs/stock_data_input');
 const customerInputData = require('./Schema_belongings/inputs/customer_data_input');
+const customerFavoriteInputData = require('./Schema_belongings/inputs/customerFavorite_data_input');
+const orderProdutsInputData = require('./Schema_belongings/inputs/orderProducts_data_input');
+const orderInputData = require('./Schema_belongings/inputs/order_data_input');
 
 
 // -------------------- RootQuery ----------------------------
@@ -43,6 +52,7 @@ const schema = require("./Schema_belongings/schema/schema");
 module.exports = buildSchema(`
 
     ${userTypeSchema}
+    ${userRoleTypeSchema}
     ${categoryTypeSchema}
     ${categoriesTypeSchema}
     ${photoTypeSchema}
@@ -53,6 +63,11 @@ module.exports = buildSchema(`
     ${stocksTypeSchema}
     ${customerTypeSchema}
     ${customersTypeSchema}
+    ${customerFavoriteTypeSchema}
+    ${customerFavoritesTypeSchema}
+    ${orderProductsTypeSchema}
+    ${orderTypeSchema}
+    ${ordersTypeSchema}
 
     ${userInputData}
     ${userInputCredintial} 
@@ -62,6 +77,9 @@ module.exports = buildSchema(`
     ${stockItemInputData}
     ${stockInputData}
     ${customerInputData}
+    ${customerFavoriteInputData}
+    ${orderProdutsInputData}
+    ${orderInputData}
 
     ${rootQuery}
 

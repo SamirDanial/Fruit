@@ -10,7 +10,7 @@ module.exports = `
         emailAddress: String,
         coordinates: String,
         favoriteCategories: [Category],
-        userId: User!,
+        userId: User,
     }
 `
 ;

@@ -32,7 +32,32 @@ const {
   getStock,
 } = require("./Resolver_belongings/stock_utility/stock_utility");
 
-const { createCustomer, editCustomer, deleteCustomer, getCustomers } = require('./Resolver_belongings/customer_utility/customer_utility');
+const {
+  createCustomer,
+  editCustomer,
+  deleteCustomer,
+  getCustomers,
+  getCustomer,
+} = require("./Resolver_belongings/customer_utility/customer_utility");
+
+const {
+  createOrder,
+  editOrder,
+  toggleCancelOrder,
+  getOrders,
+  getOrder,
+  searchOrder,
+  getOrderForCustomer,
+  getOrdersForCustomer,
+  searchOrderForCustomer,
+} = require("./Resolver_belongings/order_utility/order_utility");
+
+const {
+  addToFavorites,
+  removeFromFavorites,
+  getFavorite,
+  getFavorites,
+} = require("./Resolver_belongings/customerFavorite_utility/customerFavorite_utility");
 
 module.exports = {
   // -------------------------- user_utility---------------------------
@@ -72,4 +97,22 @@ module.exports = {
   editCustomer: (props, req) => editCustomer(props, req),
   deleteCustomer: (props, req) => deleteCustomer(props, req),
   getCustomers: (props, req) => getCustomers(props, req),
+  getCustomer: (props, req) => getCustomer(props, req),
+
+  // -------------------------- Order_utility --------------------------
+  createOrder: (props, req) => createOrder(props, req),
+  editOrder: (props, req) => editOrder(props, req),
+  toggleCancelOrder: (props, req) => toggleCancelOrder(props, req),
+  getOrders: (props, req) => getOrders(props, req),
+  getOrder: (props, req) => getOrder(props, req),
+  searchOrder: (props, req) => searchOrder(props, req),
+  getOrderForCustomer: (props, req) => getOrderForCustomer(props, req),
+  getOrdersForCustomer: (props, req) => getOrdersForCustomer(props, req),
+  searchOrderForCustomer: (props, req) => searchOrderForCustomer(props, req),
+
+  // --------------------- CustomerFavorite_utility ---------------------
+  addToFavorites: (props, req) => addToFavorites(props, req),
+  removeFromFavorites: (props, req) => removeFromFavorites(props, req),
+  getFavorite: (props, req) => getFavorite(props, req),
+  getFavorites: (props, req) => getFavorites(props, req),
 };
