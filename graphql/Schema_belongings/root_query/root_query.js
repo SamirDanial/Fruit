@@ -11,6 +11,7 @@ type RootQuery {
     getStock(ID: String!, ItemsPerPageSize: Int, ItemsPageNumber: Int): Stock
     getCustomers(PageNumber: Int!, PageSize: Int!): Customers
     getCustomer(ID: String!): Customer
+    getCustomerProfile: Customer
     searchCustomer(customerInputData: CustomerInputData): [Customer]
     getOrder(ID: String): Order
     getOrders(PageNumber: Int, PageSize: Int): Orders

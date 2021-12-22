@@ -1,8 +1,47 @@
 const Customer = require("../../../models/customer");
 const checkAdmin = require("../utility/check_admin");
+const authenticated = require("../utility/check_authenticate");
 
 module.exports = {
+  getCustomerProfile: async ( props, req) => {
+    if (req.user) {
+      await authenticated(req).then((result) => {
+        if (!result) {
+          const error = new Error("Not authorised");
+          error.code = 401;
+          throw error;
+        }
+      });
+    } else {
+      const error = new Error("Not authorised");
+      error.code = 401;
+      throw error;
+    }
+    const customer = await Customer.findOne({userId: req.user.id}).populate('userId');
+    
+    customer && await customer.populate('userId.userRole');
+
+    return customer ? {
+      ...customer._doc,
+      _id: customer._id.toString()
+    } : {
+      userId: req.user.id
+    }
+  },
   getCustomer: async ({ ID }, req) => {
+    if (req.user) {
+      await checkAdmin(req).then((result) => {
+        if (!result) {
+          const error = new Error("Not authorised");
+          error.code = 401;
+          throw error;
+        }
+      });
+    } else {
+      const error = new Error("Not authorised");
+      error.code = 401;
+      throw error;
+    }
     const customer = await Customer.findById(ID).populate('userId');
     await customer.populate('userId.userRole');
 

@@ -38,6 +38,7 @@ const {
   deleteCustomer,
   getCustomers,
   getCustomer,
+  getCustomerProfile
 } = require("./Resolver_belongings/customer_utility/customer_utility");
 
 const {
@@ -98,6 +99,7 @@ module.exports = {
   deleteCustomer: (props, req) => deleteCustomer(props, req),
   getCustomers: (props, req) => getCustomers(props, req),
   getCustomer: (props, req) => getCustomer(props, req),
+  getCustomerProfile: (props, req) => getCustomerProfile(props, req),
 
   // -------------------------- Order_utility --------------------------
   createOrder: (props, req) => createOrder(props, req),
