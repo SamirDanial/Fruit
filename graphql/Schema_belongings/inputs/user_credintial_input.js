@@ -1,6 +1,6 @@
 module.exports = `
 input Credintial {
-    email: String!
+    username: String!
     password: String!
 }
 `;

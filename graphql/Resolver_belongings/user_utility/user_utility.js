@@ -39,7 +39,6 @@ module.exports = {
         return {
           ...existingUser._doc,
           token: authToken,
-          userRole:existingUser.userRole.name,
           id: existingUser._id.toString(),
         };
     },
