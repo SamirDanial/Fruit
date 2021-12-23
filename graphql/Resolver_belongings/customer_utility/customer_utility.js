@@ -3,7 +3,7 @@ const checkAdmin = require("../utility/check_admin");
 const authenticated = require("../utility/check_authenticate");
 
 module.exports = {
-  getCustomerProfile: async ( props, req) => {
+  getCustomerProfile: async (props, req) => {
     if (req.user) {
       await authenticated(req).then((result) => {
         if (!result) {
@@ -17,16 +17,27 @@ module.exports = {
       error.code = 401;
       throw error;
     }
-    const customer = await Customer.findOne({userId: req.user.id}).populate('userId');
-    
-    customer && await customer.populate('userId.userRole');
+    const customer = await Customer.findOne({ userId: req.user.id }).populate(
+      "userId"
+    );
 
-    return customer ? {
-      ...customer._doc,
-      _id: customer._id.toString()
-    } : {
-      userId: req.user.id
+    await customer.populate("userId.userRole");
+
+    for (let i = 0; i < customer.favoriteCategories.length; i++) {
+      await customer.populate(`favoriteCategories.${i}.categoryId`);
     }
+
+    return customer
+      ? {
+          ...customer._doc,
+          favoriteCategories: customer.favoriteCategories.map(favoriteCategory => {
+            return {
+              ...favoriteCategory.categoryId._doc
+            }
+          }),
+          _id: customer._id.toString(),
+        }
+      : {};
   },
   getCustomer: async ({ ID }, req) => {
     if (req.user) {
@@ -42,13 +53,13 @@ module.exports = {
       error.code = 401;
       throw error;
     }
-    const customer = await Customer.findById(ID).populate('userId');
-    await customer.populate('userId.userRole');
+    const customer = await Customer.findById(ID).populate("userId");
+    await customer.populate("userId.userRole");
 
     return {
       ...customer._doc,
-      _id: customer._id.toString()
-    }
+      _id: customer._id.toString(),
+    };
   },
   getCustomers: async ({ PageNumber, PageSize }, req) => {
     if (req.user) {
@@ -83,6 +94,7 @@ module.exports = {
       }),
     };
   },
+
   createCustomer: async ({ customerInputData }, req) => {
     const customer = await Customer({
       name: customerInputData.name,
@@ -97,9 +109,20 @@ module.exports = {
     });
 
     const savedCustomer = await customer.save();
+    await savedCustomer.populate("userId");
+    await savedCustomer.populate("userId.userRole");
+
+    for (let i = 0; i < savedCustomer.favoriteCategories.length; i++) {
+      await savedCustomer.populate(`favoriteCategories.${i}.categoryId`);
+    }
 
     return {
       ...savedCustomer._doc,
+      favoriteCategories: savedCustomer.favoriteCategories.map(favoriteCategory => {
+        return {
+          ...favoriteCategory.categoryId._doc
+        }
+      }),
       _id: savedCustomer._id.toString(),
     };
   },

@@ -9,7 +9,7 @@ module.exports = `
         phoneNumber: String,
         emailAddress: String,
         coordinates: String,
-        favoriteCategories: [String],
+        favoriteCategories: [CustomerFavoriteCategoryInputData],
         userId: String
     }
 `

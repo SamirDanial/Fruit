@@ -35,14 +35,13 @@ const CustomerSchema = new mongoose.Schema({
   },
   favoriteCategories: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "category",
+      categoryId: { type: mongoose.Schema.Types.ObjectId, ref: "category" },
     },
   ],
   userId: {
     type: mongoose.Schema.ObjectId,
     ref: "user",
-  }
+  },
 });
 
 module.exports = Customer = mongoose.model("customer", CustomerSchema);

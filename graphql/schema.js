@@ -30,6 +30,7 @@ const productInputData = require('./Schema_belongings/inputs/product_data_input'
 const stockItemInputData = require('./Schema_belongings/inputs/stockItem_data_input');
 const stockInputData = require('./Schema_belongings/inputs/stock_data_input');
 const customerInputData = require('./Schema_belongings/inputs/customer_data_input');
+const customerFavoriteCategoryInputData = require('./Schema_belongings/inputs/customerFavoriteCategory_data_input');
 const customerFavoriteInputData = require('./Schema_belongings/inputs/customerFavorite_data_input');
 const orderProdutsInputData = require('./Schema_belongings/inputs/orderProducts_data_input');
 const orderInputData = require('./Schema_belongings/inputs/order_data_input');
@@ -65,6 +66,7 @@ module.exports = buildSchema(`
     ${customersTypeSchema}
     ${customerFavoriteTypeSchema}
     ${customerFavoritesTypeSchema}
+    ${customerFavoriteCategoryInputData}
     ${orderProductsTypeSchema}
     ${orderTypeSchema}
     ${ordersTypeSchema}
