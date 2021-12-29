@@ -101,6 +101,7 @@ module.exports = {
       lastName: customerInputData.lastName,
       active: customerInputData.active,
       physicalAddress: customerInputData.physicalAddress,
+      photoUrl: customerInputData.photoUrl,
       phoneNumber: customerInputData.phoneNumber,
       emailAddress: customerInputData.emailAddress,
       coordinates: customerInputData.coordinates,

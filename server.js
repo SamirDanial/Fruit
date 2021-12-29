@@ -59,6 +59,9 @@ app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter}).single('image')
 );
 
+app.use(express.static('public')); 
+app.use('/images', express.static('images'));
+
 app.put('/fruit-images', (req, res, next) => {
   try{
     if (!req.isAuth) {
