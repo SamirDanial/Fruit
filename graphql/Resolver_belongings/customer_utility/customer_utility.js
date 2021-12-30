@@ -128,11 +128,13 @@ module.exports = {
     };
   },
   editCustomer: async ({ customerInputData }, req) => {
+    console.log(customerInputData);
     if (customerInputData.userId == req.user.id) {
       const customer = await Customer.findById(customerInputData.ID);
       customer.name = customerInputData.name;
       customer.lastName = customerInputData.lastName;
       customer.active = customerInputData.active ? customer.active : true;
+      customer.photoUrl = customerInputData.photoUrl,
       customer.physicalAddress = customerInputData.physicalAddress;
       customer.phoneNumber = customerInputData.phoneNumber;
       customer.emailAddress = customerInputData.emailAddress;
