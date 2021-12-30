@@ -75,6 +75,8 @@ module.exports = {
       error.code = 401;
       throw error;
     }
+
+    const customerCount = await Customer.count();
     const customers = await Customer.find()
       .skip((PageNumber - 1) * PageSize)
       .limit(PageSize)
@@ -92,6 +94,7 @@ module.exports = {
           _id: customer._id.toString(),
         };
       }),
+      allCustomerCount: customerCount,
     };
   },
 
