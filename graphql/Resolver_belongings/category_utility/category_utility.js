@@ -67,6 +67,7 @@ module.exports = {
 
     const category = new Category({
       name: categoryInput.name,
+      imageUrl: categoryInput.imageUrl,
       description: categoryInput.description,
     });
 
