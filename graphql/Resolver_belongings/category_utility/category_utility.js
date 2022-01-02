@@ -95,7 +95,7 @@ module.exports = {
 
     const category = await Category.findOneAndUpdate(
       { _id: categoryInput.ID },
-      { name: categoryInput.name, description: categoryInput.description },
+      { name: categoryInput.name, description: categoryInput.description, imageUrl: categoryInput.imageUrl },
       { new: true }
     );
 

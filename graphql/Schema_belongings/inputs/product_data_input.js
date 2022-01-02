@@ -6,7 +6,7 @@ module.exports = `
         price: Int!
         visible: Boolean!
         categoriesID: [String!]!
-        photo: PhotoInputData
+        photos: [PhotoInputData]
     }
 `
 ;
