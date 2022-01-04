@@ -103,12 +103,7 @@ module.exports = {
       price: productInput.price,
       visible: productInput.visible,
       categories: productInput.categoriesID,
-      photos: [
-        {
-          photoUrl: productInput.photo.photoUrl,
-          featured: productInput.photo.featured,
-        },
-      ],
+      photos: productInput.photos,
     });
 
     const savedProduct = await product.save();
