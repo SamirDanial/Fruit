@@ -1,6 +1,7 @@
 const Product = require("../../../models/product");
 const Category = require('../../../models/category');
 const checkAdmin = require("../utility/check_admin");
+const product = require("../../../models/product");
 
 module.exports = {
   autoFillNameProduct: async function ({ Name }, req) {
@@ -55,6 +56,7 @@ module.exports = {
   },
 
   getProducts: async function ({ PageSize, PageNumber }, req) {
+    const productsCount = await product.count();
     const products = await Product.find()
       .skip((PageNumber - 1) * PageSize)
       .limit(PageSize)
@@ -79,6 +81,7 @@ module.exports = {
           ...product,
         };
       }),
+      allProductsCount: productsCount
     }: "Not found andy product";
   },
 

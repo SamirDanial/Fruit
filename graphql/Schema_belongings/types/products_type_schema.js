@@ -1,5 +1,6 @@
 module.exports = `
     type Products {
-        products: [Product]
+        products: [Product],
+        allProductsCount: Int
     }
 `;
