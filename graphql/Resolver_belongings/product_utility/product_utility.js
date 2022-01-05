@@ -141,6 +141,7 @@ module.exports = {
         price: productInput.price,
         visible: productInput.visible,
         categories: productInput.categoriesID,
+        photos: productInput.photos
       },
       { new: true }
     );
@@ -174,9 +175,12 @@ module.exports = {
       featured: photoInput.featured,
     });
 
+    const _photoId = product.photos.find(x => x.photoUrl === photoInput.photoUrl)._id.toString();
+
     await product.save();
 
     return {
+      _id: _photoId,
       photoUrl: photoInput.photoUrl,
       featured: photoInput.featured,
     };
