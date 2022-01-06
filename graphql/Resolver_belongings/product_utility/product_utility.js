@@ -82,7 +82,34 @@ module.exports = {
         };
       }),
       allProductsCount: productsCount
-    }: "Not found andy product";
+    }: "Not found any product";
+  },
+
+  getProductByCategory: async function({ID}, req) {
+    const products = await Product.find().populate('categories');
+    const categorisedProduct = products.filter(x => x.categories[0]._id.toString() === ID);
+    const productsCount = categorisedProduct.length;
+    const customisedProducts = [];
+
+    categorisedProduct.forEach((product) => {
+      let p = {};
+      p._id = product._id.toString();
+      p.name = product.name;
+      p.description = product.description;
+      p.price = product.price;
+      p.visible = product.visible;
+      p.categories = product.categories;
+      p.photos = product.photos.filter((x) => x.featured == true);
+      customisedProducts.push(p);
+    });
+    return products != null ? {
+      products: customisedProducts.map((product, index) => {
+        return {
+          ...product
+        }
+      }),
+      allProductsCount: productsCount
+    } : "Not found any product";
   },
 
   createProduct: async function ({ productInput }, req) {

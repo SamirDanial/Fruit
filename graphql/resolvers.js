@@ -13,6 +13,7 @@ const {
   createProduct,
   getProducts,
   getProduct,
+  getProductByCategory,
   editProduct,
   deleteProduct,
   addImageToProduct,
@@ -117,4 +118,5 @@ module.exports = {
   removeFromFavorites: (props, req) => removeFromFavorites(props, req),
   getFavorite: (props, req) => getFavorite(props, req),
   getFavorites: (props, req) => getFavorites(props, req),
+  getProductByCategory: (props, req) => getProductByCategory(props, req)
 };

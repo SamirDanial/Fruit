@@ -26,19 +26,19 @@ module.exports = {
   },
 
   getCategories: async function (args, req) {
-    if (req.user) {
-      await checkAdmin(req).then((result) => {
-        if (!result) {
-          const error = new Error("Not authorised");
-          error.code = 401;
-          throw error;
-        }
-      });
-    } else {
-      const error = new Error("Not authorised");
-      error.code = 401;
-      throw error;
-    }
+    // if (req.user) {
+    //   await checkAdmin(req).then((result) => {
+    //     if (!result) {
+    //       const error = new Error("Not authorised");
+    //       error.code = 401;
+    //       throw error;
+    //     }
+    //   });
+    // } else {
+    //   const error = new Error("Not authorised");
+    //   error.code = 401;
+    //   throw error;
+    // }
 
     const categories = await Category.find().sort({ name: -1 });
     return categories != null ? {

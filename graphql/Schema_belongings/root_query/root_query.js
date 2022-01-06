@@ -5,6 +5,7 @@ type RootQuery {
     getCategory(ID: String!): Category
     getProducts( PageSize: Int, PageNumber: Int): Products
     getProduct(ID: String!): Product
+    getProductByCategory(ID: String!): Products
     autoFillNameProduct(Name: String!): [String!]
     filterByNameProduct(Name: String!): Products
     getStocks(PageSize: Int, PageNumber: Int): Stocks
