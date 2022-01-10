@@ -20,9 +20,6 @@ module.exports = {
     const products = await Product.find({
       name: { $regex: Name, $options: "i" },
     })
-      .skip((PageNumber - 1) * PageSize)
-      .limit(PageSize)
-      .sort({ name: 1 });
     const customisedProducts = [];
 
     products.forEach((product) => {
