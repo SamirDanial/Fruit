@@ -25,6 +25,7 @@ const OrderSchema = new mongoose.Schema({
     ],
     totalQuantity: Number,
     totalPrice: Number,
+    approved: String,
     orderDate: {
         type: Date,
         default: new Date(),

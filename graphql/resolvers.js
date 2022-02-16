@@ -52,6 +52,7 @@ const {
   getOrderForCustomer,
   getOrdersForCustomer,
   searchOrderForCustomer,
+  approveOrder,
 } = require("./Resolver_belongings/order_utility/order_utility");
 
 const {
@@ -112,6 +113,7 @@ module.exports = {
   getOrderForCustomer: (props, req) => getOrderForCustomer(props, req),
   getOrdersForCustomer: (props, req) => getOrdersForCustomer(props, req),
   searchOrderForCustomer: (props, req) => searchOrderForCustomer(props, req),
+  approveOrder: (props,req) => approveOrder(props, req),
 
   // --------------------- CustomerFavorite_utility ---------------------
   addToFavorites: (props, req) => addToFavorites(props, req),

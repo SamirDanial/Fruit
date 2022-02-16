@@ -20,6 +20,7 @@ type RootMutation {
     deleteCustomer(ID: String!, userId: String!): String
     createOrder(orderInputData: OrderInputData): Order
     editOrder(orderInputData: OrderInputData): Order
+    approveOrder(ID: String, statusText: String):Order
     toggleCancelOrder(ID: String): Order
     addToFavorites(customerFavoriteInputData: CustomerFavoriteInputData): CustomerFavorite
     removeFromFavorites(customerFavoriteInputData: CustomerFavoriteInputData): CustomerFavorite

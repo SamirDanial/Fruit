@@ -4,6 +4,7 @@ module.exports = `
         address: String
         geoLocation: String
         orderCode: String
+        approved: String
         isCanceled: Boolean
         customerId: Customer
         products: [orderProduct]

@@ -16,6 +16,37 @@ function getRandomString(length) {
 }
 
 module.exports = {
+  approveOrder: async ({ID, statusText}, req) => {
+    if (req.user) {
+      await checkAdmin(req).then((result) => {
+        if (!result) {
+          const error = new Error("Not authorised");
+          error.code = 401;
+          throw error;
+        }
+      });
+    } else {
+      const error = new Error("Not authorised");
+      error.code = 401;
+      throw error;
+    }
+
+    const order = await Order.findById(ID);
+    order.approved = statusText;
+
+    let savedOrder = await order.save();
+
+    savedOrder = await savedOrder.populate("customerId");
+
+    for (let i = 0; i < savedOrder.products.length; i++) {
+      await savedOrder.populate(`products.${i}.productId`);
+    }
+
+    return {
+      ...savedOrder._doc,
+      _id: savedOrder._id.toString(),
+    };
+  },
   searchOrder: async (
     { orderCode, fromDate, toDate, PageNumber, PageSize },
     req
@@ -134,10 +165,11 @@ module.exports = {
       throw error;
     }
 
+    const OrdersCount = await Order.count();
     const orders = await Order.find()
       .skip((PageNumber - 1) * PageSize)
       .limit(PageSize)
-      .sort({ name: 1 })
+      .sort({ orderDate: -1 })
       .populate("customerId");
 
     for (let j = 0; j < orders.length; j++) {
@@ -154,6 +186,7 @@ module.exports = {
           _id: order._id.toString(),
         };
       }),
+      allOrderCount: OrdersCount,
     };
   },
 
@@ -320,6 +353,7 @@ module.exports = {
       address: orderInputData.address,
       geoLocation: orderInputData.geoLocation,
       orderCode: getRandomString(5),
+      approved:'N/A',
       products: orderInputData.products,
       customerId: orderInputData.customerId,
       totalQuantity: orderInputData.totalQuantity,
