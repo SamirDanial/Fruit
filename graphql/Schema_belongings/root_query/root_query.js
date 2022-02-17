@@ -22,6 +22,8 @@ type RootQuery {
     searchOrderForCustomer(customerID: String, orderCode: String, fromDate: String, toDate: String, PageNumber: Int, PageSize: Int): Orders
     getFavorites(customerId: String): CustomerFavorite
     getFavorite(customerId: String, productId: String): CustomerFavorite
+    getCityNames: CityNames
+    getSitesByCityId(ID: String): Location
 }
 `
 ;

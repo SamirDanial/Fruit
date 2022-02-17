@@ -62,6 +62,8 @@ const {
   getFavorites,
 } = require("./Resolver_belongings/customerFavorite_utility/customerFavorite_utility");
 
+const { getCityNames, getSitesByCityId } = require('./Resolver_belongings/location_utility/location_utility');
+
 module.exports = {
   // -------------------------- user_utility---------------------------
   loginUser: (props, req) => loginUser(props, req),
@@ -120,5 +122,10 @@ module.exports = {
   removeFromFavorites: (props, req) => removeFromFavorites(props, req),
   getFavorite: (props, req) => getFavorite(props, req),
   getFavorites: (props, req) => getFavorites(props, req),
-  getProductByCategory: (props, req) => getProductByCategory(props, req)
+  getProductByCategory: (props, req) => getProductByCategory(props, req),
+
+  // --------------------- Location_utility -----------------------------
+  getCityNames: (props, req) => getCityNames(props, req),
+  getSitesByCityId: (props, req) => getSitesByCityId(props, req),
+
 };

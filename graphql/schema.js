@@ -19,6 +19,9 @@ const customerFavoriteTypeSchema = require('./Schema_belongings/types/customerFa
 const orderTypeSchema = require('./Schema_belongings/types/order_type_schema');
 const orderProductsTypeSchema = require('./Schema_belongings/types/orderProducts_type_schema');
 const ordersTypeSchema = require('./Schema_belongings/types/orders_type_schema');
+const locationTypeSchema = require('./Schema_belongings/types/location_type_schema');
+const cityNameTypeSchema = require('./Schema_belongings/types/cityName_type_schema');
+const cityNamesTypeSchema = require('./Schema_belongings/types/cityNames_type_schema');
 
 
 // --------------------- Inputs ------------------------------
@@ -70,6 +73,9 @@ module.exports = buildSchema(`
     ${orderProductsTypeSchema}
     ${orderTypeSchema}
     ${ordersTypeSchema}
+    ${locationTypeSchema}
+    ${cityNameTypeSchema}
+    ${cityNamesTypeSchema}
 
     ${userInputData}
     ${userInputCredintial} 
